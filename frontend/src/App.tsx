@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useState } from "react";
 import { Menu } from "lucide-react";
-import  LandingPage  from "./pages/LandingPage";
-import  LoginPage  from "./pages/LoginPage";
-import  Dashboard  from "./pages/Dashboard";
-import  POSPage  from "./pages/POSPage";
-import  ProductsPage  from "./pages/ProductsPage";
-import  ReportsPage  from "./pages/ReportsPage";
-import  Sidebar  from "./components/Sidebar";
+import { LandingPage } from "./pages/LandingPage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { Dashboard } from "./pages/Dashboard";
+import { POSPage } from "./pages/POSPage";
+import { ProductsPage } from "./pages/ProductsPage";
+import { ReportsPage } from "./pages/ReportsPage";
+import { Sidebar } from "./components/Sidebar";
 import "./App.css";
 
 
-type AppView = "landing" | "login" | "app";
+type AppView = "landing" | "login" | "register" | "app";
 type AppPage = "dashboard" | "pos" | "products" | "reports";
 
 const pageTitles: Record<AppPage, string> = {
@@ -35,6 +35,13 @@ export default function App() {
     setPage("dashboard");
   };
 
+  const handleRegister = (role: "admin" | "kasir", name: string) => {
+    setUserRole(role);
+    setUserName(name);
+    setView("app");
+    setPage("dashboard");
+  };
+
   const handleLogout = () => {
     setView("landing");
     setPage("dashboard");
@@ -46,7 +53,11 @@ export default function App() {
   }
 
   if (view === "login") {
-    return <LoginPage onLogin={handleLogin} />;
+    return <LoginPage onLogin={handleLogin} onRegisterClick={() => setView("register")} />;
+  }
+
+  if (view === "register") {
+    return <RegisterPage onRegister={handleRegister} onLoginClick={() => setView("login")} />;
   }
 
   return (
@@ -64,7 +75,7 @@ export default function App() {
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden lg:ml-64">
         {/* Top bar */}
-        <header className="bg-white h-14 flex items-center px-5 gap-3 shrink-0" style={{ borderBottom: "1px solid var(--border)" }}>
+        <header className="bg-white h-20 flex items-center px-7 gap-3 shrink-0" style={{ borderBottom: "1px solid var(--border)" }}>
           <button
             className="lg:hidden p-1.5 rounded-lg transition-colors"
             onClick={() => setSidebarOpen(true)}
@@ -73,7 +84,8 @@ export default function App() {
             <Menu size={20} />
           </button>
           <div className="flex-1">
-            <h2 className="text-sm font-semibold" style={{ color: "var(--foreground)", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <p className="text-xs" style={{ color: "var(--muted-foreground)" }}>Halaman</p>
+            <h2 className="text-base font-semibold" style={{ color: "var(--foreground)", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               {pageTitles[page]}
             </h2>
           </div>

@@ -3,6 +3,7 @@ import { Store, Eye, EyeOff, Lock, User } from "lucide-react";
 
 interface LoginPageProps {
   onLogin: (role: "admin" | "kasir", name: string) => void;
+  onRegisterClick: () => void;
 }
 
 const credentials = [
@@ -10,7 +11,7 @@ const credentials = [
   { username: "kasir", password: "kasir123", role: "kasir" as const, name: "Sari Dewi" },
 ];
 
-export function LoginPage({ onLogin }: LoginPageProps) {
+export function LoginPage({ onLogin, onRegisterClick }: LoginPageProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
@@ -20,6 +21,12 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!username.trim() || !password.trim()) {
+      setError("Username dan password wajib diisi.");
+      return;
+    }
+
     setLoading(true);
     setTimeout(() => {
       const user = credentials.find(c => c.username === username && c.password === password);
@@ -141,12 +148,19 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             </button>
           </form>
 
+          <p className="mt-6 text-sm text-center" style={{ color: "var(--muted-foreground)" }}>
+            Belum punya akun?{" "}
+            <button type="button" onClick={onRegisterClick} className="font-semibold" style={{ color: "var(--primary)" }}>
+              Daftar
+            </button>
+          </p>
+
           {/* Demo credentials hint */}
           <div className="mt-6 p-4 rounded-xl" style={{ backgroundColor: "var(--accent)", border: "1px solid var(--border)" }}>
             <p className="text-xs font-semibold mb-2" style={{ color: "var(--accent-foreground)" }}>Akun Demo:</p>
             <div className="space-y-1">
-              <p className="text-xs" style={{ color: "var(--accent-foreground)" }}>👤 Admin: <span className="font-mono">admin</span> / <span className="font-mono">admin123</span></p>
-              <p className="text-xs" style={{ color: "var(--accent-foreground)" }}>👤 Kasir: <span className="font-mono">kasir</span> / <span className="font-mono">kasir123</span></p>
+              <p className="text-xs" style={{ color: "var(--accent-foreground)" }}>Admin: <span className="font-mono">admin</span> / <span className="font-mono">admin123</span></p>
+              <p className="text-xs" style={{ color: "var(--accent-foreground)" }}>Kasir: <span className="font-mono">kasir</span> / <span className="font-mono">kasir123</span></p>
             </div>
           </div>
         </div>
@@ -154,5 +168,3 @@ export function LoginPage({ onLogin }: LoginPageProps) {
     </div>
   );
 }
-
-export default LoginPage;

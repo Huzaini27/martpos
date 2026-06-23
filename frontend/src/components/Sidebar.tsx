@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, ShoppingCart, Package, BarChart3,
-  LogOut, Store, Menu, X, ChevronRight
+  LogOut, Store, X, ChevronRight
 } from "lucide-react";
 
 type Page = "dashboard" | "pos" | "products" | "reports";
@@ -38,7 +38,7 @@ export function Sidebar({ currentPage, onNavigate, userRole, userName, onLogout,
         style={{ borderRight: "1px solid var(--border)" }}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between p-5 border-b" style={{ borderBottom: "1px solid var(--border)" }}>
+        <div className="h-20 flex items-center justify-between px-7 border-b" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: "var(--primary)" }}>
               <Store size={18} color="white" />
@@ -121,4 +121,3 @@ export function Sidebar({ currentPage, onNavigate, userRole, userName, onLogout,
     </>
   );
 }
-export default Sidebar;

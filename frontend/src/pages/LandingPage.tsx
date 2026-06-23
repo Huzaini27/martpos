@@ -24,6 +24,19 @@ export function LandingPage({ onLoginClick }: LandingPageProps) {
     setMobileMenuOpen(false);
   };
 
+  const previewChartData = [
+    { day: "Sen", total: 312000 },
+    { day: "Sel", total: 485000 },
+    { day: "Rab", total: 398000 },
+    { day: "Kam", total: 621000 },
+    { day: "Jum", total: 754000 },
+    { day: "Sab", total: 890000 },
+    { day: "Min", total: 567000 },
+  ];
+
+  const [selectedPoint, setSelectedPoint] = useState(previewChartData[4]);
+  const maxChartValue = 1000000;
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--background)", fontFamily: "'Inter', sans-serif" }}>
       {/* Navbar */}
@@ -50,8 +63,8 @@ export function LandingPage({ onLoginClick }: LandingPageProps) {
             <button onClick={onLoginClick}
               className="px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all active:scale-95"
               style={{ backgroundColor: "var(--primary)" }}>
-              Login Sistem
-            </button>
+              Login 
+            </button>~
           </div>
 
           {/* Mobile */}
@@ -125,10 +138,57 @@ export function LandingPage({ onLoginClick }: LandingPageProps) {
                 </div>
               ))}
             </div>
-            <div className="h-24 rounded-xl flex items-end gap-1 px-2 pb-2" style={{ backgroundColor: "var(--muted)" }}>
-              {[35, 55, 42, 68, 78, 92, 60].map((h, i) => (
-                <div key={i} className="flex-1 rounded-t-md transition-all" style={{ height: `${h}%`, backgroundColor: "var(--primary)", opacity: 0.7 + i * 0.04 }} />
-              ))}
+            <div
+              className="h-40 rounded-xl px-4 py-3 relative overflow-hidden"
+              style={{ backgroundColor: "var(--muted)" }}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold" style={{ color: "var(--foreground)" }}>Penjualan Minggu Ini</p>
+                  <p className="text-[11px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Total: Rp 4.027.000</p>
+                </div>
+                <div className="rounded-xl bg-white px-3 py-2 shadow-sm" style={{ border: "1px solid var(--border)" }}>
+                  <p className="text-xs font-semibold" style={{ color: "var(--foreground)" }}>{selectedPoint.day}</p>
+                  <p className="text-[11px] mt-0.5 whitespace-nowrap" style={{ color: "var(--primary)" }}>
+                    Rp {selectedPoint.total.toLocaleString("id-ID")}
+                  </p>
+                </div>
+              </div>
+
+              <div className="absolute inset-x-4 bottom-3 h-20 flex items-end gap-2">
+                {previewChartData.map((item) => {
+                  const height = Math.max(18, (item.total / maxChartValue) * 100);
+                  const active = selectedPoint.day === item.day;
+
+                  return (
+                    <button
+                      key={item.day}
+                      type="button"
+                      onClick={() => setSelectedPoint(item)}
+                      className="flex-1 h-full flex flex-col items-center justify-end gap-1 group focus:outline-none"
+                      aria-label={`Penjualan ${item.day} Rp ${item.total.toLocaleString("id-ID")}`}
+                    >
+                      <span
+                        className="w-full rounded-t-lg transition-all duration-200 group-hover:opacity-100"
+                        style={{
+                          height: `${height}%`,
+                          background: active
+                            ? "linear-gradient(180deg, #10B981 0%, #059669 100%)"
+                            : "linear-gradient(180deg, rgba(16, 185, 129, 0.65) 0%, rgba(5, 150, 105, 0.35) 100%)",
+                          boxShadow: active ? "0 8px 18px rgba(5, 150, 105, 0.22)" : "none",
+                          opacity: active ? 1 : 0.85,
+                        }}
+                      />
+                      <span
+                        className="text-[10px] leading-none"
+                        style={{ color: active ? "var(--primary)" : "var(--muted-foreground)", fontWeight: active ? 700 : 500 }}
+                      >
+                        {item.day}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -241,5 +301,3 @@ export function LandingPage({ onLoginClick }: LandingPageProps) {
     </div>
   );
 }
-
-export default LandingPage;
