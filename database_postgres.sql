@@ -627,7 +627,7 @@ LEFT JOIN sales s ON sd.sales_id = s.id
 LEFT JOIN categories c ON p.category_id = c.id
 WHERE p.status = 'aktif'
   AND (s.is_deleted = FALSE OR s.id IS NULL)
-GROUP BY p.id
+GROUP BY p.id, p.product_code, p.product_name, c.category_name
 ORDER BY total_revenue DESC;
 
 -- ============================================================
